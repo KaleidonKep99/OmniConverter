@@ -5,8 +5,8 @@
 		xmlns:ctrl="using:GroupBox.Avalonia.Controls"
         xmlns:themes="using:GroupBox.Avalonia.Themes"
 		xmlns:oc="using:OmniConverter"
-        mc:Ignorable="d" d:DesignWidth="750" d:DesignHeight="550"
-		Width="750" Height="580"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="625"
+		Width="800" Height="625"
         x:Class="OmniConverter.SettingsWindow"
         Title="Settings"
 		ShowInTaskbar="False"
@@ -40,6 +40,21 @@
 							<ComboBoxItem>8000</ComboBoxItem>
 							<ComboBoxItem>4000</ComboBoxItem>
 						</ComboBox>
+					</Grid>
+					<Grid Name="AudioCodecPanel" Margin="2" ColumnDefinitions="2*, 1*">
+						<Label Grid.Column="0" Content="Audio codec" VerticalAlignment="Center"/>
+						<ComboBox Name="AudioCodec" HorizontalAlignment="Right" Grid.Column="1" Width="180" SelectedIndex="0" MaxDropDownHeight="200" SelectionChanged="AudioCodecChanged" >
+							<ComboBoxItem>.wav (IEEE, lossless)</ComboBoxItem>
+							<ComboBoxItem>.flac (FLAC, lossless)</ComboBoxItem>
+							<ComboBoxItem>.mp3 (LAME, lossy)</ComboBoxItem>
+							<ComboBoxItem>.ogg (Vorbis, lossy)</ComboBoxItem>
+						</ComboBox>
+					</Grid>
+					<Grid Name="AudioBitratePanel" Margin="2" ColumnDefinitions="2*, 1*">
+						<Label Grid.Column="0" Content="Audio bitrate (kbps)" VerticalAlignment="Center"/>
+						<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+							<NumericUpDown Name="AudioBitrate" HorizontalAlignment="Right" Width="180" Value="256" Minimum="0" Maximum="999999" FormatString="0" IsEnabled="False"/>
+						</StackPanel>
 					</Grid>
 					<CheckBox Name="SincInter" Content="Enable sinc interpolation" Margin="2" />
 					<CheckBox Name="DisableFX" Content="Disable sound effects (Reverb, Chorus etc.)" Margin="2" />

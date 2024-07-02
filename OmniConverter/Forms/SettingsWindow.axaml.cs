@@ -41,6 +41,8 @@ public partial class SettingsWindow : Window
 
         KhangMod.IsChecked = Program.Settings.MaxVoices > 100000;
         MaxVoices.Value = Program.Settings.MaxVoices;
+        AudioCodec.SelectedIndex = (int)Program.Settings.AudioCodec;
+        AudioBitrate.Value = Program.Settings.AudioBitrate;
 
         SincInter.IsChecked = Program.Settings.SincInter;
         DisableFX.IsChecked = Program.Settings.DisableEffects;
@@ -115,6 +117,21 @@ public partial class SettingsWindow : Window
             MaxVoices.Value = MaxVoices.Maximum;
     }
 
+    private void AudioCodecChanged(object? sender, SelectionChangedEventArgs e)
+    {   
+        if (AudioCodec != null)
+        {
+            if (AudioCodec.SelectedIndex <= 1)
+            {
+                AudioBitrate.IsEnabled = false;
+            }
+            else
+            {
+                AudioBitrate.IsEnabled = true;
+            }
+        }
+    }
+
     private void OverrideEffectsCheck(object? sender, RoutedEventArgs e)
     {
         if (OverrideEffects.IsChecked != null)
@@ -186,6 +203,9 @@ public partial class SettingsWindow : Window
             Program.Settings.SampleRate = Convert.ToInt32(((ComboBoxItem)item).Content);
         if (MaxVoices.Value != null) 
             Program.Settings.MaxVoices = (int)MaxVoices.Value;
+        Program.Settings.AudioCodec = (AudioCodecType)AudioCodec.SelectedIndex;
+        if (AudioBitrate.Value != null)
+            Program.Settings.AudioBitrate = (int)AudioBitrate.Value;
 
         if (SincInter.IsChecked != null) 
             Program.Settings.SincInter = (bool)SincInter.IsChecked;

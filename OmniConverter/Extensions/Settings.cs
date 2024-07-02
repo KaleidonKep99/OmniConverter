@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using FFMpegCore;
+using FFMpegCore.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -7,6 +9,41 @@ using System.Security.Cryptography;
 
 namespace OmniConverter
 {
+    public enum AudioCodecType
+    {
+        PCM,
+        FLAC,
+        LAME,
+        Vorbis
+    }
+
+    public static class AudioCodecTypeExtensions
+    {
+        public static string ToExtension(this AudioCodecType codec)
+        {
+            return codec switch
+            {
+                AudioCodecType.PCM => ".wav",
+                AudioCodecType.FLAC => ".flac",
+                AudioCodecType.LAME => ".mp3",
+                AudioCodecType.Vorbis => ".ogg",
+                _ => ""
+            };
+        }
+
+        public static Codec? ToFFMpegCodec(this AudioCodecType codec)
+        {
+            return codec switch
+            {
+                AudioCodecType.PCM => null, // We don't need to convert PCM
+                AudioCodecType.FLAC => FFMpeg.GetCodec("flac"),
+                AudioCodecType.LAME => FFMpeg.GetCodec("libmp3lame"),
+                AudioCodecType.Vorbis => FFMpeg.GetCodec("libvorbis"),
+                _ => null
+            };
+        }
+    }
+
     public class Settings
     {
         [JsonProperty]
@@ -16,6 +53,10 @@ namespace OmniConverter
         public float Volume = 100.0f;
         [JsonProperty]
         public int SampleRate = 48000;
+        [JsonProperty]
+        public AudioCodecType AudioCodec = AudioCodecType.PCM;
+        [JsonProperty]
+        public int AudioBitrate = 256; // kbps
 
         [JsonProperty]
         public int MaxVoices = 1000;
@@ -47,9 +88,6 @@ namespace OmniConverter
         public bool NoteOff1 = false;
         [JsonProperty]
         public bool SincInter = true;
-
-        [JsonProperty]
-        public string SelectedCodec = ".wav";
 
         [JsonProperty]
         public bool RichPresence = true;

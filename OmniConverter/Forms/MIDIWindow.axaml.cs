@@ -97,7 +97,7 @@ public partial class MIDIWindow : Window
                 else outputFolder = Program.Settings.AutoExportFolderPath;
 
                 if (!string.IsNullOrEmpty(outputFolder))
-                    _worker = new MIDIConverter(outputFolder, Program.Settings.MultiThreadedMode ? Program.Settings.ThreadsCount : 1, this, LogArea, _winRef.MIDIs);
+                    _worker = new MIDIConverter(outputFolder, Program.Settings.AudioCodec, Program.Settings.MultiThreadedMode ? Program.Settings.ThreadsCount : 1, this, LogArea, _winRef.MIDIs);
             }
             else MessageBox.Show("There are no MIDIs to convert.", "OmniConverter - Information", this);
         }
